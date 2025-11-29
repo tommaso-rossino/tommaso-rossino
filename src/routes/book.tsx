@@ -7,8 +7,6 @@ export const Route = createFileRoute('/book')({
 })
 
 function BookPage() {
-  const calendlyUsername = import.meta.env.VITE_CALENDLY_USERNAME
-
   useEffect(() => {
     // Load Calendly embed script
     const script = document.createElement('script')
@@ -106,19 +104,17 @@ function BookPage() {
 
           {/* Calendly Embed - Full width, no padding */}
           <div className="w-full overflow-hidden" style={{ height: 'calc(100vh - 120px)' }}>
-            {calendlyUsername && (
-              <div
-                className="calendly-inline-widget w-full h-full"
-                data-url={`https://calendly.com/${calendlyUsername}`}
-                style={{
-                  minWidth: '100%',
-                  height: '100%',
-                  width: '100%',
-                  margin: 0,
-                  padding: 0
-                }}
-              ></div>
-            )}
+            <div
+              className="calendly-inline-widget w-full h-full"
+              data-url={'https://calendly.com/tommaso-rossino'}
+              style={{
+                minWidth: '100%',
+                height: '100%',
+                width: '100%',
+                margin: 0,
+                padding: 0
+              }}
+            ></div>
           </div>
 
           {/* Additional Info - Compact */}
