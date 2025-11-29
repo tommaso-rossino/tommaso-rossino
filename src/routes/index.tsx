@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Mail, Phone, MapPin, Linkedin, Code, Database, Cloud, Briefcase, Award, Target, Users, Menu, X } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
@@ -8,23 +8,153 @@ export const Route = createFileRoute('/')({
 
 function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['about', 'skills', 'experience', 'projects', 'contact']
+      const scrollPosition = window.scrollY + 100
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Check on mount
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
+    const section = href.replace('#', '')
+    const isActive = activeSection === section
+    return (
+      <a
+        href={href}
+        className={`relative transition-all duration-300 ${isActive
+          ? 'text-indigo-400 font-semibold'
+          : 'text-white/80 hover:text-indigo-300'
+          }`}
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        {children}
+        {isActive && (
+          <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></span>
+        )}
+      </a>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-slate-900 relative overflow-hidden">
+      {/* Animated gradient background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900"></div>
+
+        {/* Animated mesh gradient */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-600/50 via-purple-600/50 to-pink-600/50 animate-gradient-shift"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-purple-600/40 via-pink-600/40 to-indigo-600/40 animate-gradient-shift-reverse"></div>
+        </div>
+
+        {/* Large animated blob elements */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-6000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-violet-500 rounded-full mix-blend-multiply filter blur-3xl opacity-25 animate-blob animation-delay-8000"></div>
+
+        {/* Medium animated blobs */}
+        <div className="absolute top-20 left-20 w-64 h-64 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-25 animate-float"></div>
+        <div className="absolute top-40 right-32 w-56 h-56 bg-purple-400 rounded-full mix-blend-multiply filter blur-2xl opacity-25 animate-float animation-delay-1000"></div>
+        <div className="absolute bottom-32 right-20 w-60 h-60 bg-pink-400 rounded-full mix-blend-multiply filter blur-2xl opacity-25 animate-float animation-delay-3000"></div>
+        <div className="absolute bottom-20 left-40 w-52 h-52 bg-cyan-400 rounded-full mix-blend-multiply filter blur-2xl opacity-25 animate-float animation-delay-5000"></div>
+        <div className="absolute top-1/3 left-1/4 w-48 h-48 bg-violet-400 rounded-full mix-blend-multiply filter blur-2xl opacity-25 animate-float animation-delay-7000"></div>
+        <div className="absolute top-2/3 right-1/3 w-44 h-44 bg-fuchsia-400 rounded-full mix-blend-multiply filter blur-2xl opacity-25 animate-float animation-delay-9000"></div>
+
+        {/* Small floating orbs */}
+        <div className="absolute top-1/4 left-1/5 w-32 h-32 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-orb-1"></div>
+        <div className="absolute top-1/3 right-1/5 w-28 h-28 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-orb-2"></div>
+        <div className="absolute bottom-1/4 left-1/6 w-36 h-36 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-orb-3"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-orb-4"></div>
+        <div className="absolute top-1/2 left-1/3 w-30 h-30 bg-violet-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-orb-5"></div>
+        <div className="absolute top-3/4 right-1/6 w-26 h-26 bg-fuchsia-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-orb-6"></div>
+
+        {/* Geometric shapes */}
+        <div className="absolute top-1/5 right-1/4 w-20 h-20 bg-indigo-400/20 rotate-45 animate-spin-slow"></div>
+        <div className="absolute bottom-1/5 left-1/4 w-16 h-16 bg-purple-400/20 rotate-45 animate-spin-slow animation-delay-2000"></div>
+        <div className="absolute top-2/3 left-1/5 w-14 h-14 bg-pink-400/20 rotate-45 animate-spin-slow animation-delay-4000"></div>
+        <div className="absolute top-1/6 right-1/3 w-18 h-18 bg-cyan-400/20 rotate-45 animate-spin-slow animation-delay-6000"></div>
+
+        {/* Animated particles/stars */}
+        <div className="absolute top-10 left-10 w-2 h-2 bg-white/40 rounded-full animate-twinkle"></div>
+        <div className="absolute top-32 left-32 w-1.5 h-1.5 bg-indigo-300/60 rounded-full animate-twinkle animation-delay-1000"></div>
+        <div className="absolute top-56 left-56 w-2 h-2 bg-purple-300/60 rounded-full animate-twinkle animation-delay-2000"></div>
+        <div className="absolute top-80 left-80 w-1.5 h-1.5 bg-pink-300/60 rounded-full animate-twinkle animation-delay-3000"></div>
+        <div className="absolute top-20 right-20 w-2 h-2 bg-white/40 rounded-full animate-twinkle animation-delay-4000"></div>
+        <div className="absolute top-44 right-44 w-1.5 h-1.5 bg-cyan-300/60 rounded-full animate-twinkle animation-delay-5000"></div>
+        <div className="absolute top-68 right-68 w-2 h-2 bg-violet-300/60 rounded-full animate-twinkle animation-delay-6000"></div>
+        <div className="absolute bottom-20 left-20 w-1.5 h-1.5 bg-white/40 rounded-full animate-twinkle animation-delay-7000"></div>
+        <div className="absolute bottom-44 left-44 w-2 h-2 bg-indigo-300/60 rounded-full animate-twinkle animation-delay-8000"></div>
+        <div className="absolute bottom-68 right-20 w-1.5 h-1.5 bg-purple-300/60 rounded-full animate-twinkle animation-delay-9000"></div>
+        <div className="absolute bottom-32 right-32 w-2 h-2 bg-pink-300/60 rounded-full animate-twinkle animation-delay-10000"></div>
+        <div className="absolute top-1/2 right-1/5 w-1.5 h-1.5 bg-cyan-300/60 rounded-full animate-twinkle animation-delay-11000"></div>
+
+        {/* Animated grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] animate-grid-move"></div>
+
+        {/* Shimmer effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 animate-shimmer"></div>
+
+        {/* Wavy lines */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10">
+          <svg className="absolute top-1/4 left-0 w-full h-64 animate-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,60 C300,100 600,20 900,60 C1050,80 1150,40 1200,60 L1200,120 L0,120 Z" fill="url(#gradient1)"></path>
+            <defs>
+              <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#6366f1" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#a855f7" stopOpacity="0.5" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <svg className="absolute bottom-1/4 left-0 w-full h-64 animate-wave-reverse" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,60 C300,20 600,100 900,60 C1050,40 1150,80 1200,60 L1200,0 L0,0 Z" fill="url(#gradient2)"></path>
+            <defs>
+              <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ec4899" stopOpacity="0.5" />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.5" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
+      <nav className="fixed top-0 w-full bg-black/30 backdrop-blur-xl shadow-lg border-b border-white/20 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="text-xl font-bold text-indigo-600">TR</div>
-            <div className="hidden md:flex space-x-8">
-              <a href="#about" className="text-gray-700 hover:text-indigo-600 transition">About</a>
-              <a href="#skills" className="text-gray-700 hover:text-indigo-600 transition">Skills</a>
-              <a href="#experience" className="text-gray-700 hover:text-indigo-600 transition">Experience</a>
-              <a href="#projects" className="text-gray-700 hover:text-indigo-600 transition">Projects</a>
-              <a href="#contact" className="text-gray-700 hover:text-indigo-600 transition">Contact</a>
+          <div className="flex justify-between items-center h-20">
+            <a href="#" className="group">
+              <div className="font-playfair text-2xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
+                Tommaso <span className="text-white/90">Rossino</span>
+              </div>
+            </a>
+            <div className="hidden md:flex space-x-8 items-center">
+              <NavLink href="#about">About</NavLink>
+              <NavLink href="#skills">Skills</NavLink>
+              <NavLink href="#experience">Experience</NavLink>
+              <NavLink href="#projects">Projects</NavLink>
+              <NavLink href="#contact">Contact</NavLink>
             </div>
             <button
-              className="md:hidden text-gray-700 hover:text-indigo-600 transition"
+              className="md:hidden text-white hover:text-indigo-300 transition p-2"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -32,66 +162,67 @@ function Portfolio() {
             </button>
           </div>
           {mobileMenuOpen && (
-            <div className="md:hidden pb-4 space-y-2">
-              <a href="#about" className="block py-2 text-gray-700 hover:text-indigo-600 transition" onClick={() => setMobileMenuOpen(false)}>About</a>
-              <a href="#skills" className="block py-2 text-gray-700 hover:text-indigo-600 transition" onClick={() => setMobileMenuOpen(false)}>Skills</a>
-              <a href="#experience" className="block py-2 text-gray-700 hover:text-indigo-600 transition" onClick={() => setMobileMenuOpen(false)}>Experience</a>
-              <a href="#projects" className="block py-2 text-gray-700 hover:text-indigo-600 transition" onClick={() => setMobileMenuOpen(false)}>Projects</a>
-              <a href="#contact" className="block py-2 text-gray-700 hover:text-indigo-600 transition" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+            <div className="md:hidden pb-4 space-y-3 pt-4 border-t border-white/20">
+              <NavLink href="#about">About</NavLink>
+              <NavLink href="#skills">Skills</NavLink>
+              <NavLink href="#experience">Experience</NavLink>
+              <NavLink href="#projects">Projects</NavLink>
+              <NavLink href="#contact">Contact</NavLink>
             </div>
           )}
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-40 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-            Tommaso Rossino
-          </h1>
-          <p className="text-2xl md:text-3xl text-indigo-600 font-semibold mb-4">
+          <div className="mb-8 animate-fade-in">
+            <h1 className="text-6xl md:text-8xl font-playfair font-bold text-white mb-6 leading-tight">
+              Tommaso <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Rossino</span>
+            </h1>
+          </div>
+          <p className="text-3xl md:text-4xl text-indigo-300 font-semibold mb-6 animate-fade-in-delay">
             Staff Software Engineer & Technical Lead
           </p>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12 animate-fade-in-delay-2">
             15+ years of experience architecting and developing complex web applications.
+            <br />
             Translating business needs into scalable solutions.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 text-gray-600">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-indigo-600" />
+          <div className="flex flex-wrap justify-center gap-6 text-white/90 mb-12 animate-fade-in-delay-3">
+            <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition">
+              <MapPin className="w-5 h-5 text-indigo-400" />
               <span>Los Angeles, California</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Mail className="w-5 h-5 text-indigo-600" />
-              <a href="mailto:tommaso.rossino@gmail.com" className="hover:text-indigo-600 transition">
-                tommaso.rossino@gmail.com
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone className="w-5 h-5 text-indigo-600" />
+            <a href="mailto:tommaso.rossino@gmail.com" className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition">
+              <Mail className="w-5 h-5 text-indigo-400" />
+              <span>tommaso.rossino@gmail.com</span>
+            </a>
+            <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+              <Phone className="w-5 h-5 text-indigo-400" />
               <span>+1 (747) 204-9585</span>
             </div>
           </div>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="flex justify-center gap-4 animate-fade-in-delay-4">
             <a
               href="https://www.linkedin.com/in/tommasorossino/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow-lg"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 shadow-2xl hover:shadow-indigo-500/50 hover:scale-105"
             >
-              <Linkedin className="w-5 h-5" />
-              LinkedIn
+              <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-semibold">LinkedIn</span>
             </a>
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section id="about" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center">About</h2>
-          <div className="prose prose-lg max-w-none">
-            <p className="text-gray-700 leading-relaxed text-lg">
+          <h2 className="text-5xl font-playfair font-bold text-white mb-12 text-center">About</h2>
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/20 shadow-2xl">
+            <p className="text-white/90 leading-relaxed text-lg md:text-xl">
               Seasoned Staff Software Engineer and Technical Lead with 15+ years experience
               architecting and developing complex web applications. Known for translating business
               needs into scalable solutions, guiding international teams, modernizing architectures,
@@ -103,9 +234,9 @@ function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="skills" className="relative py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Core Skills</h2>
+          <h2 className="text-5xl font-playfair font-bold text-white mb-16 text-center">Core Skills</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <SkillCategory
               icon={<Code className="w-8 h-8" />}
@@ -132,9 +263,9 @@ function Portfolio() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section id="experience" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Experience</h2>
+          <h2 className="text-5xl font-playfair font-bold text-white mb-16 text-center">Experience</h2>
           <div className="space-y-8">
             <ExperienceCard
               company="CleverFi"
@@ -295,9 +426,9 @@ function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="projects" className="relative py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Key Projects</h2>
+          <h2 className="text-5xl font-playfair font-bold text-white mb-16 text-center">Key Projects</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             <ProjectCard
               title="CleverFi Platform"
@@ -352,43 +483,43 @@ function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+      <section id="contact" className="relative py-24 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-8">Get In Touch</h2>
-          <p className="text-xl text-gray-600 mb-12">
+          <h2 className="text-5xl font-playfair font-bold text-white mb-8">Get In Touch</h2>
+          <p className="text-xl text-white/80 mb-12">
             I'm always open to discussing new opportunities, interesting projects, or just connecting with fellow engineers.
           </p>
           <div className="flex flex-wrap justify-center gap-6">
             <a
               href="mailto:tommaso.rossino@gmail.com"
-              className="flex items-center gap-3 px-6 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow-lg"
+              className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 shadow-2xl hover:shadow-indigo-500/50 hover:scale-105"
             >
-              <Mail className="w-5 h-5" />
-              <span>Email Me</span>
+              <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-semibold">Email Me</span>
             </a>
             <a
               href="https://www.linkedin.com/in/tommasorossino/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-lg"
+              className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full hover:from-blue-500 hover:to-cyan-500 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50 hover:scale-105"
             >
-              <Linkedin className="w-5 h-5" />
-              <span>LinkedIn</span>
+              <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-semibold">LinkedIn</span>
             </a>
             <a
               href="tel:+17472049585"
-              className="flex items-center gap-3 px-6 py-4 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition shadow-lg"
+              className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-2xl hover:shadow-gray-500/50 hover:scale-105"
             >
-              <Phone className="w-5 h-5" />
-              <span>Call Me</span>
+              <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-semibold">Call Me</span>
             </a>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white text-center">
-        <p className="text-gray-400">
+      <footer className="relative py-8 px-4 sm:px-6 lg:px-8 bg-black/40 backdrop-blur-sm border-t border-white/10 text-center">
+        <p className="text-white/60">
           © {new Date().getFullYear()} Tommaso Rossino. All rights reserved.
         </p>
       </footer>
@@ -398,13 +529,13 @@ function Portfolio() {
 
 function SkillCategory({ icon, title, skills }: { icon: React.ReactNode, title: string, skills: string[] }) {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition">
-      <div className="text-indigo-600 mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-4">{title}</h3>
+    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-300 hover:scale-105">
+      <div className="text-indigo-400 mb-4 group-hover:scale-110 transition-transform duration-300">{icon}</div>
+      <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>
       <ul className="space-y-2">
         {skills.map((skill, idx) => (
-          <li key={idx} className="text-gray-600 flex items-center">
-            <span className="w-2 h-2 bg-indigo-600 rounded-full mr-3"></span>
+          <li key={idx} className="text-white/80 flex items-center group/item">
+            <span className="w-2 h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mr-3 group-hover/item:scale-150 transition-transform"></span>
             {skill}
           </li>
         ))}
@@ -427,27 +558,28 @@ function ExperienceCard({
   achievements: Array<{ icon: React.ReactNode, title: string, description: string }>
 }) {
   return (
-    <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition">
+    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-300">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">{company}</h3>
-          <p className="text-xl text-indigo-600 font-semibold mb-1">{role}</p>
-          <p className="text-gray-600">{location}</p>
+          <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">{company}</h3>
+          <p className="text-xl bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent font-semibold mb-1">{role}</p>
+          <p className="text-white/70">{location}</p>
         </div>
         <div className="mt-4 md:mt-0">
-          <span className="inline-block px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold">
+          <span className="inline-block px-4 py-2 bg-indigo-500/20 text-indigo-300 rounded-full text-sm font-semibold border border-indigo-400/30">
             {period}
           </span>
         </div>
       </div>
       <div className="space-y-4">
         {achievements.map((achievement, idx) => (
-          <div key={idx} className="border-l-4 border-indigo-600 pl-4">
+          <div key={idx} className="relative pl-4 bg-gradient-to-r from-indigo-500/10 to-transparent rounded-r-lg p-3">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-purple-500 rounded-l"></div>
             <div className="flex items-start gap-3 mb-2">
-              <div className="text-indigo-600 mt-0.5">{achievement.icon}</div>
-              <h4 className="font-semibold text-gray-900">{achievement.title}</h4>
+              <div className="text-indigo-400 mt-0.5">{achievement.icon}</div>
+              <h4 className="font-semibold text-white">{achievement.title}</h4>
             </div>
-            <p className="text-gray-700 ml-8">{achievement.description}</p>
+            <p className="text-white/80 ml-8">{achievement.description}</p>
           </div>
         ))}
       </div>
@@ -467,17 +599,17 @@ function ProjectCard({
   highlight: string
 }) {
   return (
-    <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition h-full flex flex-col">
-      <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 mb-4 flex-grow">{description}</p>
+    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl hover:bg-white/15 transition-all duration-300 h-full flex flex-col hover:scale-105">
+      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-indigo-300 transition-colors">{title}</h3>
+      <p className="text-white/80 mb-4 flex-grow">{description}</p>
       <div className="mb-4">
-        <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold">
+        <span className="inline-block px-3 py-1 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-indigo-200 rounded-full text-sm font-semibold border border-indigo-400/30">
           {highlight}
         </span>
       </div>
       <div className="flex flex-wrap gap-2">
         {tech.map((t, idx) => (
-          <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+          <span key={idx} className="px-3 py-1 bg-white/10 text-white/90 rounded-lg text-xs border border-white/20 backdrop-blur-sm">
             {t}
           </span>
         ))}
