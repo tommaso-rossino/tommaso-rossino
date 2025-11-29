@@ -332,6 +332,37 @@ code {
   animation: wave-reverse 25s ease-in-out infinite;
 }
 
+/* Calendly custom styles */
+.calendly-inline-widget {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.calendly-inline-widget iframe {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Center only the spinner, not all divs */
+.calendly-inline-widget .calendly-spinner {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1000 !important;
+}
+
+.calendly-badge-widget {
+  display: none !important;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
