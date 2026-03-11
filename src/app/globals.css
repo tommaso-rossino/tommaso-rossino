@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050505;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #050505;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(5, 5, 5, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #1d4ed8, #6d28d9);
+}
+
+/* Background animations - CSS only for 60fps */
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.05);
+  }
+  50% {
+    transform: translate(-15px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(30px, 10px) scale(1.02);
+  }
+}
+
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 24px);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s ease-in-out infinite;
+}
+
+.animate-blob-delayed {
+  animation: blob 7s ease-in-out 2s infinite;
+}
+
+.animate-blob-delayed-2 {
+  animation: blob 7s ease-in-out 4s infinite;
+}
+
+.animate-float {
+  animation: float 12s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 12s ease-in-out 3s infinite;
+}
+
+.animate-float-delayed-2 {
+  animation: float 12s ease-in-out 6s infinite;
+}
+
+.animate-float-delayed-3 {
+  animation: float 12s ease-in-out 9s infinite;
+}
+
+.animate-grid-move {
+  animation: grid-move 20s linear infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-twinkle-delayed {
+  animation: twinkle 3s ease-in-out 1s infinite;
+}
+
+.animate-twinkle-delayed-2 {
+  animation: twinkle 3s ease-in-out 2s infinite;
+}
+
+.animate-twinkle-delayed-3 {
+  animation: twinkle 3s ease-in-out 3s infinite;
+}
+
+/* Calendly custom styles */
+.calendly-inline-widget {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.calendly-inline-widget iframe {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.calendly-inline-widget .calendly-spinner {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1000 !important;
+}
+
+.calendly-badge-widget {
+  display: none !important;
+}
