@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2828" height="1400" viewBox="0 0 2828 1400">
+  <rect width="2828" height="1400" fill="#0a0a0a"/>
+  <!-- Subtle gradient glow -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <!-- WiFi arcs -->
+    <style>
+      .wifi-arc { fill: none; stroke: #f59e0b; stroke-linecap: round; }
+    </style>
+  </defs>
+  <rect width="2828" height="1400" fill="url(#glow)"/>
+  <!-- WiFi icon -->
+  <g transform="translate(1414, 580)">
+    <circle cx="0" cy="60" r="18" fill="#f59e0b" opacity="0.9"/>
+    <path class="wifi-arc" d="M-50,20 Q0,-30 50,20" stroke-width="12" opacity="0.7"/>
+    <path class="wifi-arc" d="M-95,-20 Q0,-90 95,-20" stroke-width="12" opacity="0.5"/>
+    <path class="wifi-arc" d="M-140,-60 Q0,-150 140,-60" stroke-width="12" opacity="0.3"/>
+  </g>
+  <!-- CleverFi text -->
+  <text x="1414" y="820" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="120" font-weight="700" fill="white" letter-spacing="4">
+    <tspan fill="#f59e0b">Clever</tspan><tspan fill="white">Fi</tspan>
+  </text>
+  <!-- Tagline -->
+  <text x="1414" y="890" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="36" fill="rgba(255,255,255,0.4)" letter-spacing="8">
+    ALWAYS-ON WIFI TECHNOLOGY
+  </text>
+</svg>
