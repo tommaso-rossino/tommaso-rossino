@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ModalProvider } from "@/components/providers/ModalProvider";
 import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
@@ -43,6 +44,7 @@ export default function RootLayout({
           <AnimatedBackground />
           {children}
         </ModalProvider>
+        <Analytics />
         <SpeedInsights />
       </body>
     </html>
