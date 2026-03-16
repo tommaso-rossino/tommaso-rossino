@@ -58,18 +58,18 @@ export const projects: Project[] = [
     title: "CleverFi Platform",
     company: "CleverFi",
     description:
-      "Core financial platform with enterprise-grade architecture, design system ownership, and performance optimization.",
-    tech: ["React", "TypeScript", "Next.js", "Node.js", "Figma"],
+      "Smart-Network & Access Management Platform with multi-location dashboard, automated SSID provisioning, and enterprise-grade front-end architecture.",
+    tech: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
     highlight: "15% load time reduction",
     accentColor: "amber",
     imageUrl: "/cleverfi-logo.svg",
     caseStudy: {
       challenge:
-        "CleverFi's financial platform needed enterprise-grade performance improvements to handle growing user demand. The front-end architecture lacked scalability, the design system was fragmented, and Web Vitals scores were impacting user experience and SEO rankings.",
+        "CleverFi needed a scalable front-end for their Smart-Network & Access Management Platform, enabling businesses to manage Wi-Fi networks across multiple locations. The existing architecture lacked the flexibility to support complex access control workflows, and the manual overhead for network owners was high.",
       solution:
-        "Guided the technical direction and front-end architecture, focusing on scalability and maintainability within the React/TypeScript ecosystem. Directed the implementation of critical performance optimization strategies and Web Vitals improvements. Took ownership of the Design System, leveraging Figma for design integration and building a reusable component library with comprehensive documentation.",
+        "Led the front-end architecture and technical direction within the React/TypeScript/Next.js ecosystem. Built a multi-location dashboard allowing network owners to monitor and manage multiple access points from a single interface. Implemented automated SSID and temporary password provisioning with configurable expiry logic, and established a reusable component library with Tailwind CSS for design consistency.",
       impact:
-        "Achieved a 15% reduction in average platform load time. Increased front-end development efficiency by an estimated 20% through component standardization. Championed the adoption of Next.js for SSR, driving cross-functional alignment with Product and Back-end teams.",
+        "Automated SSID and temporary password generation with auto-expiry, eliminating manual network access management. Delivered a multi-location dashboard giving owners full visibility across all networks and access points. Significantly improved the end-user connection experience while reducing repetitive manual tasks for network owners. Achieved a 15% reduction in average platform load time through Next.js SSR adoption.",
     },
   },
   {

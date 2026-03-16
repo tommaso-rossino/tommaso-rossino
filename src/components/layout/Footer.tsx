@@ -1,9 +1,14 @@
 export function Footer() {
   return (
-    <footer className="relative py-8 px-4 sm:px-6 lg:px-8 bg-black/40 backdrop-blur-sm border-t border-white/10 text-center">
-      <p className="text-white/50 text-sm">
-        &copy; {new Date().getFullYear()} Tommaso Rossino. All rights reserved.
-      </p>
+    <footer className="relative py-12 px-6 sm:px-8 border-t border-white/[0.06]">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        <span className="font-serif font-bold text-[#5a5550] text-sm">
+          Tommaso Rossino
+        </span>
+        <p className="text-[#5a5550] text-xs tracking-wide">
+          &copy; {new Date().getFullYear()}
+        </p>
+      </div>
     </footer>
   );
 }

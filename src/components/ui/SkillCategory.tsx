@@ -21,21 +21,22 @@ export function SkillCategoryCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      whileHover={{ scale: 1.02, y: -4 }}
-      className="group bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-colors"
+      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+      className="group p-6 border border-white/[0.06] rounded-lg hover:border-white/[0.12] transition-colors"
     >
-      <div className="text-blue-400 mb-4">
-        <Icon className="w-8 h-8" />
+      <div className="text-[#c8553d] mb-4">
+        <Icon className="w-5 h-5" />
       </div>
-      <h3 className="text-xl font-semibold text-white mb-4">{skill.title}</h3>
+      <h3 className="text-sm font-medium text-[#e5e0db] mb-4 tracking-wide">
+        {skill.title}
+      </h3>
       <ul className="space-y-2">
         {skill.skills.map((s, idx) => (
-          <li key={idx} className="text-white/60 flex items-center text-sm">
-            <span className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mr-3 shrink-0" />
+          <li key={idx} className="text-[#8a8580] flex items-center text-[13px]">
+            <span className="w-1 h-1 bg-[#c8553d]/60 rounded-full mr-3 shrink-0" />
             {s}
           </li>
         ))}

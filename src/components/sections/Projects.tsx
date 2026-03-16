@@ -9,17 +9,20 @@ export function Projects() {
   return (
     <motion.section
       id="projects"
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6 }}
-      className="relative py-24 px-4 sm:px-6 lg:px-8"
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+      className="relative py-24 px-6 sm:px-8"
     >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-16 text-center">
-          Featured Projects
-        </h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="mb-16">
+          <p className="section-label text-[#c8553d] mb-3">Selected Work</p>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#e5e0db] tracking-tight">
+            Featured Projects
+          </h2>
+        </div>
+        <div className="grid md:grid-cols-2 gap-5">
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}

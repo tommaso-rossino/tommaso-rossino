@@ -1,19 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Sans, Syne } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ModalProvider } from "@/components/providers/ModalProvider";
-import { AnimatedBackground } from "@/components/layout/AnimatedBackground";
 import "./globals.css";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dm-sans",
 });
 
-const playfair = Playfair_Display({
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-syne",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#0c0c0c",
 };
 
 export default function RootLayout({
@@ -37,12 +36,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} antialiased`}
+      className={`${dmSans.variable} ${syne.variable} antialiased`}
     >
-      <body className="font-sans bg-[#050505] text-white">
+      <body className="font-sans bg-[#0c0c0c] text-[#e5e0db]">
         <ModalProvider>
-          <AnimatedBackground />
-          {children}
+          <div className="noise-overlay">
+            {children}
+          </div>
         </ModalProvider>
         <Analytics />
         <SpeedInsights />

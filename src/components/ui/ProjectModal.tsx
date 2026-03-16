@@ -7,24 +7,9 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useModal } from "@/components/providers/ModalProvider";
 import { useScrollLock } from "@/lib/hooks/useScrollLock";
 
-const accentText: Record<string, string> = {
-  blue: "text-blue-400",
-  slate: "text-slate-300",
-  amber: "text-amber-400",
-  emerald: "text-emerald-400",
-};
-
-const accentDot: Record<string, string> = {
-  blue: "bg-blue-400",
-  slate: "bg-slate-300",
-  amber: "bg-amber-400",
-  emerald: "bg-emerald-400",
-};
-
 function ScreenshotCarousel({
   screenshots,
   title,
-  accentColor,
   layout = "phone",
 }: {
   screenshots: string[];
@@ -53,8 +38,7 @@ function ScreenshotCarousel({
   }, [prev, next]);
 
   return (
-    <div className="relative w-full h-72 md:h-96 bg-gradient-to-br from-slate-900 to-slate-800 rounded-t-2xl overflow-hidden">
-      {/* Screenshots */}
+    <div className="relative w-full h-72 md:h-96 bg-gradient-to-br from-[#141414] to-[#1a1a1a] rounded-t-lg overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -62,20 +46,18 @@ function ScreenshotCarousel({
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -40 }}
           transition={{ duration: 0.25 }}
-          className={
-            layout === "landscape"
-              ? "absolute inset-0"
-              : "absolute inset-0 flex items-center justify-center py-6"
-          }
+          className="absolute inset-0 flex items-center justify-center"
         >
           {layout === "landscape" ? (
-            <Image
-              src={screenshots[current]}
-              alt={`${title} screenshot ${current + 1}`}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 896px) 100vw, 896px"
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src={screenshots[current]}
+                alt={`${title} screenshot ${current + 1}`}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 896px) 100vw, 896px"
+              />
+            </div>
           ) : (
             <div className="relative h-full w-48 md:w-56">
               <Image
@@ -90,36 +72,32 @@ function ScreenshotCarousel({
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation arrows */}
       <button
         onClick={prev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 backdrop-blur-sm rounded-full text-white/60 hover:text-white transition cursor-pointer"
+        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-[#0c0c0c]/60 rounded text-[#8a8580] hover:text-[#e5e0db] transition cursor-pointer"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={next}
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-black/40 backdrop-blur-sm rounded-full text-white/60 hover:text-white transition cursor-pointer"
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-[#0c0c0c]/60 rounded text-[#8a8580] hover:text-[#e5e0db] transition cursor-pointer"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
         {screenshots.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
-            className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-              idx === current
-                ? `${accentDot[accentColor] || accentDot.blue} scale-125`
-                : "bg-white/30 hover:bg-white/50"
+            className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${
+              idx === current ? "bg-[#c8553d] scale-125" : "bg-white/20 hover:bg-white/40"
             }`}
           />
         ))}
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0c0c0c] to-transparent" />
     </div>
   );
 }
@@ -147,27 +125,23 @@ export function ProjectModal() {
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           onClick={closeModal}
         >
-          {/* Overlay */}
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 
-          {/* Panel */}
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
+            initial={{ scale: 0.97, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
+            exit={{ scale: 0.97, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/10 rounded-2xl"
+            className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0c0c0c] border border-white/[0.08] rounded-lg"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close button */}
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-2 bg-black/50 backdrop-blur-sm rounded-full text-white/60 hover:text-white transition cursor-pointer"
+              className="absolute top-4 right-4 z-10 p-2 bg-[#0c0c0c]/80 rounded text-[#8a8580] hover:text-[#e5e0db] transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Image header */}
             {activeProject.appScreenshots ? (
               <ScreenshotCarousel
                 screenshots={activeProject.appScreenshots}
@@ -181,60 +155,49 @@ export function ProjectModal() {
                   src={activeProject.imageUrl}
                   alt={activeProject.title}
                   fill
-                  className="object-cover rounded-t-2xl"
+                  className="object-cover rounded-t-lg"
                   sizes="(max-width: 896px) 100vw, 896px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent" />
               </div>
             )}
 
-            {/* Content */}
             <div className="p-8 md:p-12 -mt-8 relative">
-              <p className="text-white/40 text-sm mb-1">
+              <p className="text-[#5a5550] text-xs tracking-wide uppercase mb-1">
                 {activeProject.company}
               </p>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#e5e0db] mb-8 tracking-tight">
                 {activeProject.title}
               </h2>
 
               <div className="space-y-8">
                 {(
                   [
-                    {
-                      label: "Challenge",
-                      content: activeProject.caseStudy.challenge,
-                    },
-                    {
-                      label: "Solution",
-                      content: activeProject.caseStudy.solution,
-                    },
-                    {
-                      label: "Impact",
-                      content: activeProject.caseStudy.impact,
-                    },
+                    { label: "Challenge", content: activeProject.caseStudy.challenge },
+                    { label: "Solution", content: activeProject.caseStudy.solution },
+                    { label: "Impact", content: activeProject.caseStudy.impact },
                   ] as const
                 ).map((section) => (
                   <div key={section.label}>
-                    <h3
-                      className={`text-lg font-semibold mb-3 ${accentText[activeProject.accentColor] || accentText.blue}`}
-                    >
+                    <h3 className="text-[#c8553d] text-xs tracking-widest uppercase font-medium mb-3">
                       {section.label}
                     </h3>
-                    <p className="text-white/60 leading-relaxed">
+                    <p className="text-[#8a8580] leading-relaxed">
                       {section.content}
                     </p>
                   </div>
                 ))}
               </div>
 
-              {/* Tech tags */}
-              <div className="mt-8 pt-6 border-t border-white/10">
-                <p className="text-white/40 text-sm mb-3">Technologies</p>
+              <div className="mt-10 pt-6 border-t border-white/[0.06]">
+                <p className="text-[#5a5550] text-xs tracking-wide uppercase mb-3">
+                  Technologies
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {activeProject.tech.map((t, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1.5 bg-white/5 text-white/70 rounded-lg text-sm border border-white/10"
+                      className="px-2.5 py-1 bg-white/[0.04] text-[#8a8580] rounded text-xs border border-white/[0.06]"
                     >
                       {t}
                     </span>

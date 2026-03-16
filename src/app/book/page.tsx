@@ -48,18 +48,17 @@ export default function BookPage() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Compact nav */}
-      <nav className="fixed top-0 w-full bg-white/5 backdrop-blur-xl border-b border-white/10 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="fixed top-0 w-full bg-[#0c0c0c]/90 backdrop-blur-md border-b border-white/[0.06] z-50">
+        <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="group">
-              <div className="font-serif text-xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
-                Tommaso <span className="text-white/90">Rossino</span>
-              </div>
+              <span className="font-serif text-xl italic text-[#e5e0db] tracking-tight">
+                Tommaso Rossino
+              </span>
             </Link>
             <Link
               href="/"
-              className="flex items-center gap-2 text-white/60 hover:text-blue-300 transition text-sm"
+              className="flex items-center gap-2 text-[#8a8580] hover:text-[#c8553d] transition text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Back</span>
@@ -68,14 +67,13 @@ export default function BookPage() {
         </div>
       </nav>
 
-      {/* Main Content */}
       <div className="relative pt-20 pb-0 px-0">
         <div className="w-full">
           <div className="text-center mb-4 px-4 pt-4">
-            <h1 className="text-2xl md:text-3xl font-serif font-bold text-white mb-1">
+            <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#e5e0db] mb-1 tracking-tight">
               Book a Meeting
             </h1>
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-[#5a5550]">
               Choose a time that works best for you
             </p>
           </div>
@@ -98,11 +96,11 @@ export default function BookPage() {
           </div>
 
           <div className="text-center py-2 px-4">
-            <p className="text-white/40 text-xs">
+            <p className="text-[#5a5550] text-xs">
               Having trouble?{" "}
               <a
                 href="mailto:tommaso.rossino@gmail.com"
-                className="text-blue-400 hover:text-blue-300 transition"
+                className="text-[#c8553d] hover:text-[#d4724e] transition"
               >
                 Send me an email
               </a>
