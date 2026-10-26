@@ -7,9 +7,9 @@ export const personal = {
   linkedin: "https://www.linkedin.com/in/tommasorossino/",
   calendly: "https://calendly.com/tommaso-rossino",
   about:
-    "Seasoned Staff Software Engineer and Technical Lead with 15+ years experience architecting and developing complex web applications. Known for translating business needs into scalable solutions, guiding international teams, modernizing architectures, and delivering high-quality products in agile environments. Proficient in React, Java, Groovy, microservices, and TDD.",
+    "Seasoned Staff Software Engineer and Technical Lead with 16+ years experience architecting and developing complex web applications. Known for translating business needs into scalable solutions, guiding international teams, modernizing architectures, and delivering high-quality products in agile environments. Proficient in React, Java, Groovy, microservices, and TDD.",
   heroSubtitle:
-    "Seasoned Staff Software Engineer and Technical Lead with 15+ years experience architecting complex web applications. Known for translating business needs into scalable solutions, guiding international teams, modernizing architectures, and delivering high-quality products in agile environments.",
+    "Seasoned Staff Software Engineer and Technical Lead with 16+ years experience architecting complex web applications. Known for translating business needs into scalable solutions, guiding international teams, modernizing architectures, and delivering high-quality products in agile environments.",
   contactMessage:
     "I'm always open to discussing new opportunities, interesting projects, or just connecting with fellow engineers.",
 };
