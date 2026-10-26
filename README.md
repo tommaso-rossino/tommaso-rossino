@@ -27,8 +27,6 @@ The dev server runs at [http://localhost:3000](http://localhost:3000).
 | `npm run dev`   | Start the development server (Turbopack)     |
 | `npm run build` | Create a production build                    |
 | `npm run start` | Serve the production build                   |
-| `npm run lint`  | Run Next.js linting                          |
-
 ## Deployment
 
 The site is deployed on [Vercel](https://vercel.com/). Every push to `main` triggers an automatic production deploy.
