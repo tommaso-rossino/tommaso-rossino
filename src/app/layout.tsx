@@ -18,7 +18,7 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "Tommaso Rossino - Staff Software Engineer",
   description:
-    "Staff Software Engineer & Technical Lead. 15+ years of experience architecting and developing complex web applications.",
+    "Staff Software Engineer & Technical Lead. 16+ years of experience architecting and developing complex web applications.",
   icons: {
     icon: { url: "/icon.svg", type: "image/svg+xml" },
   },
