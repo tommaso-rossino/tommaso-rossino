@@ -90,7 +90,7 @@ export function Hero() {
           </div>
           <div className="flex items-center gap-2">
             <ArrowDownRight className="w-3.5 h-3.5" />
-            <span>Los Angeles, CA</span>
+            <span>{personal.location}</span>
           </div>
         </motion.div>
       </motion.div>

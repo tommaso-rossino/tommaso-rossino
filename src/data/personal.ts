@@ -1,7 +1,7 @@
 export const personal = {
   name: "Tommaso Rossino",
   title: "Staff Software Engineer",
-  location: "Los Angeles, California",
+  location: "Austin, TX",
   email: "tommaso.rossino@gmail.com",
   phone: "+1 (747) 204-9585",
   linkedin: "https://www.linkedin.com/in/tommasorossino/",
