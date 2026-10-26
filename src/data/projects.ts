@@ -10,7 +10,7 @@ export const projects: Project[] = [
     tech: ["React Native", "iOS", "Android", "Node.js", "Full-Stack"],
     highlight: "4.7★ App Store rating",
     accentColor: "blue",
-    imageUrl: "/tricon-app-thermostat.png",
+    imageUrl: "/tricon-app-tech.png",
     appScreenshots: [
       "/tricon-app-thermostat.png",
       "/tricon-app-pay.png",
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     tech: ["JavaScript", "React", "Multi-language", "REST APIs"],
     highlight: "10+ European markets",
     accentColor: "slate",
-    imageUrl: "/fca-configurator-exterior.png",
+    imageUrl: "/fca-configurator-powertrain.png",
     appScreenshots: [
       "/fca-configurator-exterior.png",
       "/fca-configurator-interior.png",
@@ -79,7 +79,7 @@ export const projects: Project[] = [
     tech: ["React", "Redux", "AngularJS", "TypeScript", "REST/SOAP"],
     highlight: "35% performance boost",
     accentColor: "emerald",
-    imageUrl: "/uhc-homepage.png",
+    imageUrl: "/uhc-plans.png",
     appScreenshots: [
       "/uhc-homepage.png",
       "/uhc-plans.png",
