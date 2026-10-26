@@ -2,6 +2,32 @@ import type { Experience } from "@/types";
 
 export const experiences: Experience[] = [
   {
+    company: "Payactiv",
+    location: "Austin, TX",
+    role: "Senior Front-End Engineer",
+    period: "Mar 2026 - Present",
+    achievements: [
+      {
+        icon: "Layers",
+        title: "Web & Mobile Architecture",
+        description:
+          "Architects and develops scalable, high-performance web and mobile interfaces for an earned wage access platform used by millions of people, across React, Next.js, and React Native.",
+      },
+      {
+        icon: "Zap",
+        title: "Performance & Delivery",
+        description:
+          "Drives front-end performance optimization and debugging across the web and mobile ecosystems while contributing to full-stack feature delivery.",
+      },
+      {
+        icon: "Users",
+        title: "Cross-Functional Delivery",
+        description:
+          "Partners with product, UX, and backend engineering to ship financial tools, applying design-thinking methods in close collaboration with the teams.",
+      },
+    ],
+  },
+  {
     company: "CleverFi",
     location: "Los Angeles, California",
     role: "Staff Front-End Engineer",
