@@ -7,6 +7,8 @@ import {
   Award,
   Users,
   Code,
+  Layers,
+  Zap,
 } from "lucide-react";
 import type { Experience } from "@/types";
 
@@ -16,6 +18,8 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
   Award,
   Users,
   Code,
+  Layers,
+  Zap,
 };
 
 export function ExperienceCard({
