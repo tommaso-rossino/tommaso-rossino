@@ -1,3 +1,6 @@
+import { after } from 'next/server'
+import { sanitizeVisitor, saveConversation, type ChatConversation } from '@/lib/chat-log'
+
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
@@ -133,12 +136,13 @@ const SSE_DONE = sseData('[DONE]')
 // `event: error` makes the widget surface the message instead of ignoring it.
 const SSE_ERROR = encoder.encode(`event: error\ndata: ${JSON.stringify({ error: 'Chat backend error' })}\n\n`)
 
-function errorStream() {
+function errorStream(onDone?: () => Promise<void>) {
   return new Response(
     new ReadableStream<Uint8Array>({
-      start(controller) {
+      async start(controller) {
         controller.enqueue(SSE_ERROR)
         controller.enqueue(SSE_DONE)
+        await onDone?.()
         controller.close()
       }
     }),
@@ -170,6 +174,65 @@ export async function POST(req: Request) {
     return jsonError('Invalid messages', 400)
   }
 
+  // Conversation logging. Storage failures must never break the chat, so every
+  // write goes through `persist`, which swallows errors.
+  const startedAt = new Date().toISOString()
+  const conversation: ChatConversation = {
+    id: crypto.randomUUID(),
+    startedAt,
+    updatedAt: startedAt,
+    // Never the IP: only coarse geo plus a few browser headers.
+    visitor: sanitizeVisitor({
+      country: req.headers.get('x-vercel-ip-country'),
+      region: req.headers.get('x-vercel-ip-country-region'),
+      city: req.headers.get('x-vercel-ip-city'),
+      userAgent: req.headers.get('user-agent'),
+      referer: req.headers.get('referer'),
+      language: req.headers.get('accept-language')
+    }),
+    messages: history.map((m) => ({ ...m, at: startedAt })),
+    status: 'open'
+  }
+  const persist = async (conv: ChatConversation) => {
+    try {
+      await saveConversation(conv)
+    } catch {
+      /* ignore */
+    }
+  }
+  // Fire-and-forget so the first token is not delayed.
+  const initialWrite = persist(conversation)
+
+  // The widget disconnects right after [DONE]; `after` keeps the function alive
+  // until the final write has landed.
+  let markLogged = () => {}
+  const logged = new Promise<void>((resolve) => (markLogged = resolve))
+  try {
+    after(() => logged)
+  } catch {
+    /* ignore */
+  }
+
+  let finalized = false
+  const finalize = async (status: 'ok' | 'error', reply: string) => {
+    if (finalized) return
+    finalized = true
+    try {
+      await initialWrite
+      const at = new Date().toISOString()
+      await persist({
+        ...conversation,
+        updatedAt: at,
+        status,
+        messages: reply
+          ? [...conversation.messages, { role: 'assistant', content: reply, at }]
+          : conversation.messages
+      })
+    } finally {
+      markLogged()
+    }
+  }
+
   let upstream: Response
   try {
     upstream = await fetch(`${apiUrl.replace(/\/+$/, '')}/v1/chat/completions`, {
@@ -188,15 +251,18 @@ export async function POST(req: Request) {
       cache: 'no-store'
     })
   } catch (err) {
-    if (req.signal.aborted) return new Response(null, { status: 499 })
+    if (req.signal.aborted) {
+      await finalize('error', '')
+      return new Response(null, { status: 499 })
+    }
     console.error('[chat] Hermes request failed:', err)
-    return errorStream()
+    return errorStream(() => finalize('error', ''))
   }
 
   if (!upstream.ok || !upstream.body) {
     const text = await upstream.text().catch(() => '')
     console.error(`[chat] Hermes returned ${upstream.status}:`, text)
-    return errorStream()
+    return errorStream(() => finalize('error', ''))
   }
 
   const reader = upstream.body.getReader()
@@ -206,6 +272,8 @@ export async function POST(req: Request) {
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let buffer = ''
+      let reply = ''
+      let failed = false
       let finished = false
 
       const emit = (chunk: Uint8Array) => {
@@ -216,7 +284,6 @@ export async function POST(req: Request) {
         if (cancelled || finished) return
         finished = true
         controller.enqueue(SSE_DONE)
-        controller.close()
       }
 
       // Returns true when upstream signalled [DONE].
@@ -228,6 +295,7 @@ export async function POST(req: Request) {
         try {
           const content = JSON.parse(data)?.choices?.[0]?.delta?.content
           if (typeof content === 'string' && content) {
+            reply += content
             emit(sseData(JSON.stringify({ delta: content })))
           }
         } catch {
@@ -246,19 +314,28 @@ export async function POST(req: Request) {
           for (const line of lines) {
             if (handleLine(line)) {
               reader.cancel().catch(() => {})
-              finish()
               return
             }
           }
         }
         buffer += decoder.decode()
         if (buffer) handleLine(buffer)
-        finish()
       } catch (err) {
         if (cancelled || finished) return
         console.error('[chat] Hermes stream error:', err)
+        failed = true
         emit(SSE_ERROR)
+      } finally {
         finish()
+        // Final log write happens after [DONE] has been sent to the client.
+        await finalize(failed ? 'error' : 'ok', reply)
+        if (!cancelled) {
+          try {
+            controller.close()
+          } catch {
+            /* already closed */
+          }
+        }
       }
     },
     cancel() {
