@@ -1,5 +1,5 @@
 import { after } from 'next/server'
-import { sanitizeVisitor, saveConversation, type ChatConversation } from '@/lib/chat-log'
+import { getConversation, sanitizeVisitor, saveConversation, type ChatConversation } from '@/lib/chat-log'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -119,6 +119,41 @@ function validateMessages(body: unknown): ChatMessage[] | null {
   return clean
 }
 
+// One conversation record per visitor session, keyed by this cookie.
+const SESSION_COOKIE = 'chat_sid'
+const SESSION_MAX_AGE = 60 * 60 * 24 * 30
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function readSessionId(req: Request): string | null {
+  const header = req.headers.get('cookie')
+  if (!header) return null
+  for (const part of header.split(';')) {
+    const [name, ...rest] = part.split('=')
+    if (name.trim() !== SESSION_COOKIE) continue
+    const value = rest.join('=').trim()
+    return UUID_RE.test(value) ? value.toLowerCase() : null
+  }
+  return null
+}
+
+type StoredMessage = ChatConversation['messages'][number]
+
+// The widget resends the full history, so normally `stored` is a prefix of
+// `incoming` and the result is exactly `incoming` (with the stored timestamps).
+// After a page reload the widget starts empty while the cookie survives; the
+// overlap is then partial or zero and the new messages are appended instead
+// of overwriting the earlier transcript.
+function mergeHistory(stored: StoredMessage[], incoming: ChatMessage[], at: string): StoredMessage[] {
+  const same = (a: ChatMessage, b: ChatMessage) => a.role === b.role && a.content === b.content
+  // Longest suffix of `stored` that equals a prefix of `incoming`.
+  let overlap = Math.min(stored.length, incoming.length)
+  for (; overlap > 0; overlap--) {
+    const offset = stored.length - overlap
+    if (incoming.slice(0, overlap).every((m, i) => same(m, stored[offset + i]))) break
+  }
+  return [...stored, ...incoming.slice(overlap).map((m) => ({ ...m, at }))]
+}
+
 function jsonError(error: string, status: number, headers?: Record<string, string>) {
   return Response.json({ error }, { status, headers })
 }
@@ -176,9 +211,11 @@ export async function POST(req: Request) {
 
   // Conversation logging. Storage failures must never break the chat, so every
   // write goes through `persist`, which swallows errors.
+  const sessionId = readSessionId(req)
+  const conversationId = sessionId ?? crypto.randomUUID()
   const startedAt = new Date().toISOString()
   const conversation: ChatConversation = {
-    id: crypto.randomUUID(),
+    id: conversationId,
     startedAt,
     updatedAt: startedAt,
     // Never the IP: only coarse geo plus a few browser headers.
@@ -200,8 +237,25 @@ export async function POST(req: Request) {
       /* ignore */
     }
   }
-  // Fire-and-forget so the first token is not delayed.
-  const initialWrite = persist(conversation)
+  const loadStored = async (id: string) => {
+    try {
+      const stored = await getConversation(id)
+      return stored && Array.isArray(stored.messages) ? stored : null
+    } catch {
+      return null
+    }
+  }
+  // Fire-and-forget so the first token is not delayed. A returning session is
+  // merged into its stored record (keeping startedAt, visitor and status).
+  // Resolves to the record the final write builds on.
+  const initialWrite = (async () => {
+    const stored = sessionId ? await loadStored(sessionId) : null
+    const base: ChatConversation = stored
+      ? { ...stored, updatedAt: startedAt, messages: mergeHistory(stored.messages, history, startedAt) }
+      : conversation
+    await persist(base)
+    return base
+  })()
 
   // The widget disconnects right after [DONE]; `after` keeps the function alive
   // until the final write has landed.
@@ -218,15 +272,13 @@ export async function POST(req: Request) {
     if (finalized) return
     finalized = true
     try {
-      await initialWrite
+      const base = await initialWrite
       const at = new Date().toISOString()
       await persist({
-        ...conversation,
+        ...base,
         updatedAt: at,
         status,
-        messages: reply
-          ? [...conversation.messages, { role: 'assistant', content: reply, at }]
-          : conversation.messages
+        messages: reply ? [...base.messages, { role: 'assistant', content: reply, at }] : base.messages
       })
     } finally {
       markLogged()
@@ -345,5 +397,12 @@ export async function POST(req: Request) {
     }
   })
 
-  return new Response(stream, { headers: SSE_HEADERS })
+  const headers = new Headers(SSE_HEADERS)
+  if (!sessionId) {
+    headers.append(
+      'Set-Cookie',
+      `${SESSION_COOKIE}=${conversationId}; Path=/; Max-Age=${SESSION_MAX_AGE}; HttpOnly; SameSite=Lax; Secure`
+    )
+  }
+  return new Response(stream, { headers })
 }
