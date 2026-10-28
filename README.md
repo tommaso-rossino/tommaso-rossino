@@ -36,6 +36,10 @@ Live site (both URLs serve the same build):
 - https://tommasorossino.com
 - https://tommaso-rossino.vercel.app
 
+## Chat logs
+
+Site chat conversations can be logged to Upstash Redis and read on a private dashboard at `/admin/chat-logs`. To enable it, add the Upstash integration in Vercel (Storage → Marketplace) so `KV_REST_API_URL` and `KV_REST_API_TOKEN` are set, set `ADMIN_TOKEN` to a long random string, and redeploy. Sign in on the dashboard with that token (or open `/admin/chat-logs?token=...` once). Without Redis credentials logging is a silent no-op; without `ADMIN_TOKEN` the dashboard returns 404. Only coarse geo (country/region/city), user agent, referer and language are stored — never the IP — and at most the latest 500 conversations are kept.
+
 ## Project structure
 
 ```
