@@ -103,3 +103,29 @@ body {
 .calendly-badge-widget {
   display: none !important;
 }
+
+/* Chat widget — site theme */
+.site-chat {
+  --cw-font: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --cw-title-font: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --cw-panel-bg: #0c0c0c;
+  --cw-list-bg: #0a0a0a;
+  --cw-header-bg: #0c0c0c;
+  --cw-header-text: #e5e0db;
+  --cw-header-border: 1px solid rgba(255, 255, 255, 0.06);
+  --cw-text: #e5e0db;
+  --cw-muted: #8a8580;
+  --cw-border: rgba(255, 255, 255, 0.08);
+  --cw-accent: #c8553d;
+  --cw-accent-contrast: #ffffff;
+  --cw-bubble-bg: rgba(255, 255, 255, 0.04);
+  --cw-bubble-text: #e5e0db;
+  --cw-input-bg: rgba(255, 255, 255, 0.03);
+  --cw-input-border: rgba(255, 255, 255, 0.1);
+  --cw-error-bg: rgba(200, 85, 61, 0.12);
+  --cw-error-text: #d4724e;
+  --cw-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --cw-toggle-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --cw-radius: 10px;
+  --cw-radius-sm: 6px;
+}

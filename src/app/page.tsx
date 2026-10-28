@@ -22,9 +22,11 @@ export default function Home() {
       <Footer />
       <ChatWidget
         endpoint="/api/chat"
-        title="Chatta con me"
-        placeholder="Chiedimi qualcosa..."
-        welcomeMessage="Ciao! Sono il sito di Tommaso, chiedimi pure qualsiasi cosa sul mio lavoro, le mie competenze o la mia esperienza."
+        variant="dark"
+        className="site-chat"
+        title="Chat with me"
+        placeholder="Ask me anything…"
+        welcomeMessage="Hi — I'm Tommaso's assistant. Ask me about his experience, stack, or projects."
       />
     </div>
   );
